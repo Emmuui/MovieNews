@@ -1,0 +1,30 @@
+{% extends 'news/base.html' %}
+
+{% block content %}
+    <div class="row ml-4">
+        <h3 class="ml-5">{{ movie.title }}</h3>
+        <div class="col-lg-6">
+            <div class="card mb-4" style="width: 18rem;">
+                <img class="card-img-top" height="350px;" src="{{ movie.image.url }}" alt="..." />
+            </div>
+        </div>
+        <div class="col-lg-2">
+             <h5><b>Категория</b></h5>
+             <br>
+             <h5><b>Жанр</b></h5>
+        </div>
+        <div class="col-lg-4">
+            <span>{{ movie.category.name }}</span>
+            <br><br><br>
+            {% for genre in movie.genre.all %}
+                <span>{{ genre.name }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {{ movie.description }}
+
+
+
+
+
+{% endblock %}
