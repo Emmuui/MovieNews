@@ -2,25 +2,55 @@
 
 {% block content %}
     <div class="row ml-4">
-        <h3 class="ml-5">{{ movie.title }}</h3>
-        <div class="col-lg-6">
+        <h3>{{ movie.title }}</h3>
+        <div class="col-lg-5">
             <div class="card mb-4" style="width: 18rem;">
                 <img class="card-img-top" height="350px;" src="{{ movie.image.url }}" alt="..." />
             </div>
         </div>
-        <div class="col-lg-2">
-             <h5><b>Категория</b></h5>
-             <br>
-             <h5><b>Жанр</b></h5>
-        </div>
-        <div class="col-lg-4">
-            <span>{{ movie.category.name }}</span>
-            <br><br><br>
-            {% for genre in movie.genre.all %}
-                <span>{{ genre.name }}</span>
-            {% endfor %}
+        <div class="col-lg-6">
+            <ul>
+                <li style="list-style: none">
+                    <span><b>Категория</b> {{ movie.category.name }}</span>
+                </li>
+                <li style="list-style: none">
+                    <span><b>Год выпуска</b> {{ movie.release_date }}</span>
+                </li>
+                <li style="list-style: none">
+                    <span><b>Страна</b> {{ movie.country }}</span>
+                </li>
+
+                <li style="list-style: none">
+                    <span><b>Режиссеры</b>
+                        {% for director in movie.director.all %}
+                            <span>{{ director.name }} </span>
+                        {% endfor %}
+                    </span>
+                </li>
+                <li style="list-style: none">
+                    <span><b>Актеры</b>
+                        {% for actor in movie.actor.all %}
+                            <span>{{ actor.name }} </span>
+                        {% endfor %}
+                    </span>
+                </li>
+                <li style="list-style: none">
+                    <span><b>Жанр</b>
+                        {% for genre in movie.genre.all %}
+                            <span>{{ genre.name }} </span>
+                        {% endfor %}
+                    </span>
+                </li>
+                <li style="list-style: none">
+                    <span><b>Возраст</b> {{ movie.age }}</span>
+                </li>
+                <li style="list-style: none">
+                    <span><b>Длительность</b> {{ movie.duration }} мин.</span>
+                </li>
+            </ul>
         </div>
     </div>
+    <h2>Про что фильм «{{ movie.title }}»:"</h2>
     {{ movie.description }}
 
 
