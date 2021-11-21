@@ -1,9 +1,10 @@
 {% extends 'news/base.html' %}
-
+{% load static %}
 {% block content %}
-    <div class="row ml-4">
-        <h3>{{ movie.title }}</h3>
-        <div class="col-lg-5">
+    <div class="row ml-3">
+        <h3 class="mt-5"></h3>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-4">
             <div class="card mb-4" style="width: 18rem;">
                 <img class="card-img-top" height="350px;" src="{{ movie.image.url }}" alt="..." />
             </div>
@@ -50,11 +51,76 @@
             </ul>
         </div>
     </div>
-    <h2>Про что фильм «{{ movie.title }}»:"</h2>
-    {{ movie.description }}
-
-
-
-
-
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <h2>Про что фильм «{{ movie.title }}»:"</h2>
+            <p>{{ movie.description|safe }}</p>
+        </div>
+    </div>
+    <div class="be-comment-block">
+        <h1 class="comments-title">Comments
+            {% if movie.moviecomment_set.count == 0 %}
+                0
+            {% else %}
+                {{ movie.moviecomment_set.count }}
+            {% endif %}</h1>
+        <div class="be-comment">
+            {% for comment in movie.moviecomment_set.all %}
+                <div class="be-img-comment">
+                    <a href="#">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                    </a>
+                </div>
+                <div class="be-comment-content">
+                        <span class="be-comment-name">
+                            <a href="blog-detail-2.html">{{ comment.username }}</a>
+                            </span>
+                        <span class="be-comment-time">
+                            <i class="fa fa-clock-o"></i>
+                            {{ comment.comment_date }}
+                        </span>
+                    <p class="be-comment-text">
+                        {{ comment.comment }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+        <form action="{% url 'add_comment' movie.id %}" method="post" class="form-block" id="CommentForm">
+            {% csrf_token %}
+            <input type="hidden" name="parent" id="parent_id">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 fl_icon">
+                    <div class="form-group fl_icon">
+                        <div class="icon"><i class="fa fa-envelope-o"></i></div>
+                        <input class="form-input" type="text" placeholder="Email" name="email">
+                        {{ add_comment.email }}
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group fl_icon">
+                        <div class="icon"><i class="fa fa-user"></i></div>
+                        <input class="form-input" type="text" placeholder="Your name" name="username">
+                        {{ add_comment.username }}
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <textarea class="form-input" required="" placeholder="Your text" name="comment"></textarea>
+                        {{ add_comment.comment }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary pull-right">submit</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
+
+
+
+
+
+
+
+
+
