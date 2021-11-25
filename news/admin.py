@@ -12,11 +12,19 @@ class MovieAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
+class IframeVideoAdminForm(forms.ModelForm):
+    link = forms.CharField(label='Ссылка на трейлер', widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = IframeVideo
+        fields = '__all__'
+
+
 class MovieAdmin(admin.ModelAdmin):
     list_display = ('title', 'is_published', 'category', 'slug')
     prepopulated_fields = {'slug': ('title',), }
     search_fields = ('title', )
-    list_filter = ('category', 'genre', 'release_date',)
+    list_filter = ('category', 'genre', 'premiere_date',)
     save_as = True
     list_editable = ('is_published', )
     form = MovieAdminForm
@@ -40,7 +48,7 @@ class MovieAdmin(admin.ModelAdmin):
             'fields': (('awards', 'budget', 'is_published'), )
         }),
         ('Описание', {
-            'fields': ('description', )
+            'fields': ('description', 'iframe')
         }),
     )
 
@@ -55,9 +63,14 @@ class MovieCategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',), }
 
 
+class IframeVideoAdmin(admin.ModelAdmin):
+    list_display = ('name', 'link')
+    form = IframeVideoAdminForm
+
+
 admin.site.register(MovieCategory, MovieCategoryAdmin)
 admin.site.register(MovieDirectorActor)
 admin.site.register(Movie, MovieAdmin)
-admin.site.register(IframeVideo)
+admin.site.register(IframeVideo, IframeVideoAdmin)
 admin.site.register(MovieComment)
 admin.site.register(MovieGenre, MovieGenreAdmin)

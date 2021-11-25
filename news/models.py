@@ -13,7 +13,7 @@ class MovieCategory(models.Model):
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return f'{self.name}'
+        return self.name
 
 
 class MovieGenre(models.Model):
@@ -25,7 +25,7 @@ class MovieGenre(models.Model):
         verbose_name_plural = 'Жанры'
 
     def __str__(self):
-        return f'{self.name}'
+        return self.name
 
 
 class MovieDirectorActor(models.Model):
@@ -43,8 +43,15 @@ class MovieDirectorActor(models.Model):
 
 
 class IframeVideo(models.Model):
-    name = models.CharField(verbose_name='Имя фильма', max_length=50)
-    iframe = models.TextField(verbose_name='Ссылка на трейлер')
+    name = models.ForeignKey('Movie', verbose_name='Имя фильма', max_length=50, null=True, on_delete=models.SET_NULL)
+    link = models.TextField(verbose_name='Ссылка на трейлер')
+
+    class Meta:
+        verbose_name = 'Ссылка на трейлер'
+        verbose_name_plural = 'Ссылки на трейлеры'
+
+    def __str__(self):
+        return self.name.title
 
 
 class Movie(models.Model):
@@ -63,7 +70,6 @@ class Movie(models.Model):
     category = models.ForeignKey(MovieCategory, verbose_name='Категория', null=True, on_delete=models.SET_NULL)
     slug = models.SlugField(max_length=50, unique=True, null=True, blank=True, verbose_name='url')
     image = models.ImageField(upload_to='movie_image/', verbose_name='Изображение')
-    release_date = models.IntegerField(verbose_name='Год выпуска')
     description = RichTextUploadingField(null=True, verbose_name='Описание')
     iframe = models.ForeignKey(IframeVideo, verbose_name='Трейлер', null=True, on_delete=models.SET_NULL)
     budget = models.PositiveIntegerField(verbose_name='Бюджет фильма', null=True)
@@ -81,6 +87,9 @@ class Movie(models.Model):
 
     def get_absolute_url(self):
         return reverse('movie_detail', args=[str(self.slug)])
+
+    def get_comment(self):
+        return self.moviecomment_set.filter(parent__isnull=True)
 
 
 class PhotoGallery(models.Model):
