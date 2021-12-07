@@ -1,8 +1,9 @@
 {% extends 'news/base.html' %}
 {% load static %}
 {% load tag_movie %}
-{% block content %}
-    <div class="row ml-3">
+{% load humanize %}
+{% block movie %}
+    <div class="row ml-5">
         <div class="col-1"></div>
         <div class="col-4"><h3 class="mt-5">{{ movie.title }}</h3></div>
         <div class="row">
@@ -24,7 +25,7 @@
                         <span><b>Категория</b> {{ movie.category.name }}</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Год выпуска</b> {{ movie.premiere_date }}</span>
+                        <span><b>Год выпуска</b> {{ movie.premieredate }}</span>
                     </li>
                     <li style="list-style: none">
                         <span><b>Страна</b> {{ movie.country }}</span>
@@ -69,91 +70,88 @@
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-10">
+        <div class="col">
             <h2>Про что {{ movie.category.name|lower }} «{{ movie.title }}»:"</h2>
             <p>{{ movie.description|safe }}</p>
             <p id="iframe">{{ movie.iframe.link|safe }}</p>
         </div>
-    </div>
-    <div class="be-comment-block">
-        <h1 class="comments-title">Comments
-            {% if movie.moviecomment_set.count == 0 %}
-                0
-            {% else %}
-                {{ movie.moviecomment_set.count }}
-            {% endif %}</h1>
-        <div class="be-comment">
-            {% for comment in movie.get_comment %}
-                <div class="be-img-comment">
-                    <a href="#">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
-                    </a>
-                </div>
-                <div class="be-comment-content">
-                        <span class="be-comment-name">
-                            <a href="#!" style="font-size:14px;">{{ comment.username }}</a>
-                            <i class="fa fa-clock-o" style="margin-left:10px; font-size: 11px; color: #b4b7c1;"> {{ comment.comment_date }}</i>
-                        </span>
-                        <span class="be-comment-time">
-                            <a href="#CommentForm" onclick="addComment('{{ comment.username }}', '{{ comment.id }}')">Reply</a>
-                        </span>
-                    <p class="be-comment-text">
-                        {{ comment.comment }}
-                    </p>
-                </div>
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col-6 mb-3">
-                        {% for com in comment.moviecomment_set.all %}
-                            <div class="be-img-comment">
-                                <a href="#">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
-                                </a>
-                            </div>
-                            <div class="be-comment-content">
-                                <span class="be-comment-name">
-                                    <a href="#!" style="font-size:14px;">{{ com.username }}</a>
-                                    <i class="fa fa-clock-o" style="margin-left:10px; font-size: 11px; color: #b4b7c1;"> {{ com.comment_date }}</i>
-                                </span>
-                                <p class="be-comment-text">
-                                    {{ com.comment }}
-                                </p>
-                            </div>
-                        {% endfor %}
+        <div class="be-comment-block">
+            <h1 class="comments-title">Comments
+                {% if movie.moviecomment_set.count == 0 %}
+                    0
+                {% else %}
+                    {{ movie.moviecomment_set.count }}
+                {% endif %}</h1>
+            <div class="be-comment">
+                {% for comment in movie.get_comment %}
+                    <div class="be-img-comment">
+                        <a href="#">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                        </a>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-        <form action="{% url 'add_comment' movie.id %}" method="post" class="form-block" id="CommentForm">
-            {% csrf_token %}
-            <input type="hidden" name="parent" id="parent_id" value="">
-            <div class="row">
-                <div class="col-xs-12 col-sm-6 fl_icon">
-                    <div class="form-group fl_icon">
-                        <div class="icon"><i class="fa fa-envelope-o"></i></div>
-                        <input class="form-input" type="text" placeholder="Email" name="email">
-                        {{ add_comment.email }}
+                    <div class="be-comment-content">
+                            <span class="be-comment-name">
+                                <a href="#!" style="font-size:14px;">{{ comment.username }}</a>
+                                <i class="fa fa-clock-o" style="margin-left:10px; font-size: 11px; color: #b4b7c1;"> {{ comment.comment_date|naturaltime  }}</i>
+                            </span>
+                            <span class="be-comment-time">
+                                <a href="#CommentForm" onclick="addComment('{{ comment.username }}', '{{ comment.id }}')">Reply</a>
+                            </span>
+                        <p class="be-comment-text">
+                            {{ comment.comment }}
+                        </p>
                     </div>
-                </div>
-                <div class="col-xs-12 col-sm-6">
-                    <div class="form-group fl_icon">
-                        <div class="icon"><i class="fa fa-user"></i></div>
-                        <input class="form-input" type="text" placeholder="Your name" name="username">
-                        {{ add_comment.username }}
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-6 mb-3">
+                            {% for com in comment.moviecomment_set.all %}
+                                <div class="be-img-comment">
+                                    <a href="#">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                                    </a>
+                                </div>
+                                <div class="be-comment-content">
+                                    <span class="be-comment-name">
+                                        <a href="#!" style="font-size:14px;">{{ com.username }}</a>
+                                        <i class="fa fa-clock-o" style="margin-left:10px; font-size: 11px; color: #b4b7c1;"> {{ com.comment_date|naturaltime }}</i>
+                                    </span>
+                                    <p class="be-comment-text">
+                                        {{ com.comment }}
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-                <div class="col-xs-12">
-                    <div class="form-group">
-                        <textarea class="form-input" required="" id='yourcomment' placeholder="Your text" name="comment"></textarea>
-                        {{ add_comment.comment }}
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary pull-right">submit</button>
+                {% endfor %}
             </div>
-        </form>
+            <form action="{% url 'add_comment' movie.id %}" method="post" class="form-block" id="CommentForm">
+                {% csrf_token %}
+                <input type="hidden" name="parent" id="parent_id" value="">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 fl_icon">
+                        <div class="form-group fl_icon">
+                            <div class="icon"><i class="fa fa-envelope-o"></i></div>
+                            <input class="form-input" type="text" placeholder="Email" name="email">
+                            {{ add_comment.email }}
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group fl_icon">
+                            <div class="icon"><i class="fa fa-user"></i></div>
+                            <input class="form-input" type="text" placeholder="Your name" name="username">
+                            {{ add_comment.username }}
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <textarea class="form-input" required="" id='yourcomment' placeholder="Your text" name="comment"></textarea>
+                            {{ add_comment.comment }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">submit</button>
+                </div>
+            </form>
+        </div>
     </div>
     <script>
         function addComment(username, id) {
@@ -161,7 +159,7 @@
             document.getElementById("yourcomment").innerText = `${username}, `
         }
     </script>
-{% endblock %}
+{% endblock movie %}
 
 
 

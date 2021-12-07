@@ -24,7 +24,7 @@ class MovieAdmin(admin.ModelAdmin):
     list_display = ('title', 'is_published', 'category', 'slug')
     prepopulated_fields = {'slug': ('title',), }
     search_fields = ('title', )
-    list_filter = ('category', 'genre', 'premiere_date',)
+    list_filter = ('category', 'genre', 'premieredate',)
     save_as = True
     list_editable = ('is_published', )
     form = MovieAdminForm
@@ -42,7 +42,7 @@ class MovieAdmin(admin.ModelAdmin):
             'fields': (('genre', 'category'), )
         }),
         (None, {
-            'fields': (('age', 'country', 'premiere_date'), )
+            'fields': (('age', 'country', 'premieredate'), )
         }),
         (None, {
             'fields': (('awards', 'budget', 'is_published'), )

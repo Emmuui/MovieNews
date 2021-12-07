@@ -3,17 +3,17 @@
             <hr class="my-0">
             <ul class="pagination justify-content-center my-4">
                 {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?page=1">Newer</a></li>
+                    <li class="page-item"><a class="page-link" href="?{{ q }}page=1">Newer</a></li>
                 {% endif %}
                 {% for page in paginator.page_range %}
                     {% if page_obj.number == page %}
-                        <li class="page-item active" aria-current="page"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                        <li class="page-item active" aria-current="page"><a class="page-link" href="?{{ q }}page={{ page }}">{{ page }}</a></li>
                     {% else %}
-                        <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                        <li class="page-item"><a class="page-link" href="?{{ q }}page={{ page }}">{{ page }}</a></li>
                     {% endif %}
                 {% endfor %}
                 {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Older</a></li>
+                    <li class="page-item"><a class="page-link" href="?{{ q }}page={{ page_obj.paginator.num_pages }}">Older</a></li>
                 {% endif %}
             </ul>
         </nav>

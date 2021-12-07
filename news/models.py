@@ -64,7 +64,7 @@ class Movie(models.Model):
     country = models.CharField(max_length=100, verbose_name='Страна', null=True)
     age = models.CharField(max_length=100, verbose_name='Возраст', null=True)
     awards = models.CharField(max_length=100, verbose_name='Награды фильма', null=True)
-    premiere_date = models.DateField(verbose_name='Дата премьеры', default=date.today, null=True)
+    premieredate = models.DateField(verbose_name='Дата премьеры', default=date.today, null=True)
     duration = models.IntegerField(verbose_name='Длительность(мин)', null=True)
     genre = models.ManyToManyField(MovieGenre, verbose_name='Жанр')
     category = models.ForeignKey(MovieCategory, verbose_name='Категория', null=True, on_delete=models.SET_NULL)
@@ -91,6 +91,9 @@ class Movie(models.Model):
     def get_comment(self):
         return self.moviecomment_set.filter(parent__isnull=True)
 
+    def get_four_item(self):
+        return Movie.objects.all()[:4]
+
 
 class PhotoGallery(models.Model):
     title = models.CharField(verbose_name='Название', max_length=100)
@@ -104,7 +107,7 @@ class MovieComment(models.Model):
     comment = models.TextField(verbose_name='Комментарий', max_length=3000)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True)
     movie = models.ForeignKey(Movie, verbose_name='Фильм', on_delete=models.CASCADE)
-    comment_date = models.DateField(auto_now_add=True, verbose_name='Дата создания', null=True)
+    comment_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания', null=True)
 
     def __str__(self):
         return self.username
