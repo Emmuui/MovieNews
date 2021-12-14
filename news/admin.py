@@ -2,10 +2,12 @@ from django.contrib import admin
 from .models import *
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from modeltranslation.admin import TranslationAdmin
 
 
 class MovieAdminForm(forms.ModelForm):
-    description = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
+    description_ru = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
+    description_en = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
 
     class Meta:
         model = Movie
@@ -20,7 +22,20 @@ class IframeVideoAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
-class MovieAdmin(admin.ModelAdmin):
+@admin.register(MovieGenre)
+class MovieGenreAdmin(TranslationAdmin):
+    list_display = ('name', 'slug')
+    prepopulated_fields = {'slug': ('name',), }
+
+
+@admin.register(MovieCategory)
+class MovieCategoryAdmin(TranslationAdmin):
+    list_display = ('name', 'slug')
+    prepopulated_fields = {'slug': ('name',), }
+
+
+@admin.register(Movie)
+class MovieAdmin(TranslationAdmin):
     list_display = ('title', 'is_published', 'category', 'slug')
     prepopulated_fields = {'slug': ('title',), }
     search_fields = ('title', )
@@ -53,24 +68,17 @@ class MovieAdmin(admin.ModelAdmin):
     )
 
 
-class MovieGenreAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
-    prepopulated_fields = {'slug': ('name',), }
-
-
-class MovieCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
-    prepopulated_fields = {'slug': ('name',), }
-
-
+@admin.register(IframeVideo)
 class IframeVideoAdmin(admin.ModelAdmin):
     list_display = ('name', 'link')
     form = IframeVideoAdminForm
 
 
-admin.site.register(MovieCategory, MovieCategoryAdmin)
-admin.site.register(MovieDirectorActor)
-admin.site.register(Movie, MovieAdmin)
-admin.site.register(IframeVideo, IframeVideoAdmin)
-admin.site.register(MovieComment)
-admin.site.register(MovieGenre, MovieGenreAdmin)
+@admin.register(PhotoGallery)
+class PhotoGalleryAdmin(TranslationAdmin):
+    list_display = ('title', 'movie')
+
+
+@admin.register(MovieDirectorActor)
+class MovieDirectorActorAdmin(TranslationAdmin):
+    list_display = ('name', 'slug')

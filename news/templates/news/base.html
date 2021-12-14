@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
     <!-- Page content-->
-    {% block container %}
-    <div class="container-sm">
+
+    <div class="container-sm" style="">
         {% include 'news/navbar.html' %}
-        {% endblock container %}
         <div class="row">
-            {% include 'news/sidebar.html' %}
-            {% block movie %}
-            {% endblock movie %}
+            <div class="col-8">
+                {% block movie %}
+                {% endblock movie %}
+            </div>
+            <div class="col-3">{% include 'news/sidebar.html' %}</div>
+            <div class="col-1"></div>
         </div>
     </div>
 {% endblock content %}

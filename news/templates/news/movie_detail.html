@@ -1,77 +1,75 @@
 {% extends 'news/base.html' %}
-{% load static %}
-{% load tag_movie %}
-{% load humanize %}
 {% block movie %}
+{% load static i18n tag_movie humanize%}
     <div class="row ml-5">
         <div class="col-1"></div>
         <div class="col-4"><h3 class="mt-5">{{ movie.title }}</h3></div>
         <div class="row">
-            <div class="col-lg-1"></div>
             <div class="col-lg-4">
                 <div class="card mb-4" style="width: 18rem;">
                     <img class="card-img-top" height="350px;" src="{{ movie.image.url }}" alt="..." />
                 </div>
             </div>
+            <div class="col-lg-1"></div>
             <div class="col-lg-6">
                 <ul>
                     <li style="list-style: none">
-                        <span><b>Название на английском</b> {{ movie.title_eng }}</span>
+                        <span><b>{% trans 'Название на английском' %}</b> {{ movie.title_eng }}</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Слоган</b> {{ movie.tagline }}</span>
+                        <span><b>{% trans 'Слоган' %}</b> {{ movie.tagline }}</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Категория</b> {{ movie.category.name }}</span>
+                        <span><b>{% trans 'Категория' %}</b> {{ movie.category.name }}</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Год выпуска</b> {{ movie.premieredate }}</span>
+                        <span><b>{% trans 'Год выпуска' %}</b> {{ movie.premieredate }}</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Страна</b> {{ movie.country }}</span>
+                        <span><b>{% trans 'Страна' %}</b> {{ movie.country }}</span>
                     </li>
 
                     <li style="list-style: none">
-                        <span><b>Режиссеры</b>
+                        <span><b>{% trans 'Режиссеры' %}</b>
                             {% for director in movie.director.all %}
-                                <span>{{ director.name }} </span>
+                                <span>{{ director.name }}, </span>
                             {% endfor %}
                         </span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Актеры</b>
+                        <span><b>{% trans 'Актеры' %}</b>
                             {% for actor in movie.actor.all %}
-                                <span>{{ actor.name }} </span>
+                                <span>{{ actor.name }}, </span>
                             {% endfor %}
                         </span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Жанр</b>
+                        <span><b>{% trans 'Жанр' %}</b>
                             {% for genre in movie.genre.all %}
-                                <span>{{ genre.name }} </span>
+                                <span>{{ genre.name }}, </span>
                             {% endfor %}
                         </span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Награды</b> {{ movie.awards }}</span>
+                        <span><b>{% trans 'Награды' %}</b> {{ movie.awards }}</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Бюджет</b> {{ movie.budget }} млн $</span>
+                        <span><b>{% trans 'Бюджет' %}</b> {{ movie.budget }} {% trans 'млн' %} $</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Возраст</b> {{ movie.age }}</span>
+                        <span><b>{% trans 'Возраст' %}</b> {{ movie.age }}</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Длительность</b> {{ movie.duration }} мин.</span>
+                        <span><b>{% trans 'Длительность' %}</b> {{ movie.duration }} {% trans 'мин' %}.</span>
                     </li>
                      <li style="list-style: none;">
-                         <b><a style="text-decoration: none; color: grey;" href="#iframe">Трейлер</a></b>
+                         <b><a style="text-decoration: none; color: grey;" href="#iframe">{% trans 'Трейлер' %}</a></b>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="col">
-            <h2>Про что {{ movie.category.name|lower }} «{{ movie.title }}»:"</h2>
+            <h2>{% trans 'Про что' %} {{ movie.category.name|lower }} «{{ movie.title }}»:"</h2>
             <p>{{ movie.description|safe }}</p>
             <p id="iframe">{{ movie.iframe.link|safe }}</p>
         </div>

@@ -56,19 +56,16 @@ class AddComment(View):
 class MovieFilterView(GenreYearFilter, ListView):
 
     def get_queryset(self):
-
-        queryset = Movie.objects.filter(
-            Q(category__in=self.request.GET.getlist('category')) | \
-            Q(genre__in=self.request.GET.getlist('genre'))
-            )
-        
-        print(f'genre {self.request.GET.getlist("genre")}')
-        print(f'category {self.request.GET.getlist("category")}')
-        return queryset
+        return Movie.objects.filter(
+                (
+                    Q(category__in=self.request.GET.getlist('category')) &
+                    Q(genre__in=self.request.GET.getlist('genre'))
+                )
+            ).distinct()
 
 
 class SearchView(GenreYearFilter, ListView):
-    paginate_by = 2
+    paginate_by = 4
 
     def get_queryset(self):
 

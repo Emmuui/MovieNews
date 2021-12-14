@@ -1,0 +1,31 @@
+<form action="{% url 'movie_filter' %}" method="get" class="mt-5">
+    <div class="border-bottom pb-2 ml-2">
+        <h4 id="burgundy">Фильтры</h4>
+    </div>
+    <div class="py-2 border-bottom ml-3">
+        <h6 class="font-weight-bold"><a href="#pageSubmenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: black;">Категория</a></h6>
+        <div id="orange"><span class="fa fa-minus"></span></div>
+        <ul class="collapse list-unstyled" id="pageSubmenu3">
+            {% for cat in view.get_category %}
+                <li>
+                     <input type="checkbox" name='category' value="{{ cat.id }}"> <label>{{ cat }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="py-2 border-bottom ml-3">
+        <h6 class="font-weight-bold"><a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: black;">Жанр</a></h6>
+        <div id="orange"><span class="fa fa-minus"></span></div>
+        <ul class="collapse list-unstyled" id="pageSubmenu1">
+            {% for genre in view.get_genre %}
+                <li>
+                    <input type="checkbox" name="genre" value="{{ genre.id }}"> <label>{{ genre.name }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <button type="submit" class="btn btn-secondary ml-4 mt-3">Поиск по фильтру</button>
+</form>
+
+
+

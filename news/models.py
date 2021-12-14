@@ -100,6 +100,13 @@ class PhotoGallery(models.Model):
     image = models.ImageField(verbose_name='Фотография', upload_to='photo_gallery/')
     movie = models.ForeignKey(Movie, verbose_name='Фильм', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Фотография'
+        verbose_name_plural = 'Фотографии'
+
 
 class MovieComment(models.Model):
     email = models.EmailField(verbose_name='Email')

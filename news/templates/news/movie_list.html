@@ -12,10 +12,10 @@
             padding: 20px;
             width: 100%;
         }
+
     </style>
     <!-- Nested row for non-featured blog posts-->
-    <div class="col-lg-7 mt-5">
-        <div class="row ml-4">
+        <div class="row ml-4 mt-5">
             {% if movie_list %}
                 {% for mov in movie_list %}
                     <div class="col-lg-6">
@@ -23,7 +23,7 @@
                         <div class="card mb-2" style="width: 18rem;">
                             <a href="{{ mov.get_absolute_url }}"><img class="card-img-top" height="350px;" src="{{ mov.image.url }}" alt="..." /></a>
                         </div>
-                        <div class="mb-5">
+                        <div class="mb-5 mr-5">
                                 <h2 style="font-size: 12pt; text-align: center;"><a href="{{ mov.get_absolute_url }}" style="color: #595959;">{{ mov.title }}</a></h2>
                         </div>
                     </div>
@@ -39,6 +39,6 @@
                 </div>
             {% endif %}
         </div>
-    </div>
+
 {% include 'news/pagination.html' %}
 {% endblock movie %}
