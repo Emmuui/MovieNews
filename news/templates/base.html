@@ -20,14 +20,20 @@
     </head>
     <style>
         body {
-          height: 100%;
-        }
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            }
+        .main {
+            flex: 1;
+            }
     </style>
     <body class="d-flex flex-column">
-        <!-- Page content-->
-        {% block content %}
-
-        {% endblock content %}
+        <div class="main">
+            <!-- Page content-->
+            {% block container %}
+            {% endblock container %}
+        </div>
         <!-- Footer-->
         {% include 'news/footer.html' %}
         <!-- Bootstrap core JS-->

@@ -1,1 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'news/base.html' %}
+
+{% block account %}
+    <div class="row mt-5">
+        <div class="col-4"></div>
+        <div class="col-5">
+        {% block content %}
+        {% endblock content%}
+        </div>
+        <div class="col-2"></div>
+    </div>
+{% endblock account %}

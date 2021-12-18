@@ -1,154 +1,168 @@
 {% extends 'news/base.html' %}
 {% block movie %}
 {% load static i18n tag_movie humanize%}
-    <div class="row ml-5">
-        <div class="col-1"></div>
-        <div class="col-4"><h3 class="mt-5">{{ movie.title }}</h3></div>
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="card mb-4" style="width: 18rem;">
-                    <img class="card-img-top" height="350px;" src="{{ movie.image.url }}" alt="..." />
-                </div>
-            </div>
-            <div class="col-lg-1"></div>
-            <div class="col-lg-6">
-                <ul>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Название на английском' %}</b> {{ movie.title_eng }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Слоган' %}</b> {{ movie.tagline }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Категория' %}</b> {{ movie.category.name }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Год выпуска' %}</b> {{ movie.premieredate }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Страна' %}</b> {{ movie.country }}</span>
-                    </li>
-
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Режиссеры' %}</b>
-                            {% for director in movie.director.all %}
-                                <span>{{ director.name }}, </span>
-                            {% endfor %}
-                        </span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Актеры' %}</b>
-                            {% for actor in movie.actor.all %}
-                                <span>{{ actor.name }}, </span>
-                            {% endfor %}
-                        </span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Жанр' %}</b>
-                            {% for genre in movie.genre.all %}
-                                <span>{{ genre.name }}, </span>
-                            {% endfor %}
-                        </span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Награды' %}</b> {{ movie.awards }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Бюджет' %}</b> {{ movie.budget }} {% trans 'млн' %} $</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Возраст' %}</b> {{ movie.age }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>{% trans 'Длительность' %}</b> {{ movie.duration }} {% trans 'мин' %}.</span>
-                    </li>
-                     <li style="list-style: none;">
-                         <b><a style="text-decoration: none; color: grey;" href="#iframe">{% trans 'Трейлер' %}</a></b>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col">
-            <h2>{% trans 'Про что' %} {{ movie.category.name|lower }} «{{ movie.title }}»:"</h2>
-            <p>{{ movie.description|safe }}</p>
-            <p id="iframe">{{ movie.iframe.link|safe }}</p>
-        </div>
-        <div class="be-comment-block">
-            <h1 class="comments-title">Comments
-                {% if movie.moviecomment_set.count == 0 %}
-                    0
-                {% else %}
-                    {{ movie.moviecomment_set.count }}
-                {% endif %}</h1>
-            <div class="be-comment">
-                {% for comment in movie.get_comment %}
-                    <div class="be-img-comment">
-                        <a href="#">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
-                        </a>
-                    </div>
-                    <div class="be-comment-content">
-                            <span class="be-comment-name">
-                                <a href="#!" style="font-size:14px;">{{ comment.username }}</a>
-                                <i class="fa fa-clock-o" style="margin-left:10px; font-size: 11px; color: #b4b7c1;"> {{ comment.comment_date|naturaltime  }}</i>
-                            </span>
-                            <span class="be-comment-time">
-                                <a href="#CommentForm" onclick="addComment('{{ comment.username }}', '{{ comment.id }}')">Reply</a>
-                            </span>
-                        <p class="be-comment-text">
-                            {{ comment.comment }}
-                        </p>
-                    </div>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-6 mb-3">
-                            {% for com in comment.moviecomment_set.all %}
-                                <div class="be-img-comment">
-                                    <a href="#">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
-                                    </a>
-                                </div>
-                                <div class="be-comment-content">
-                                    <span class="be-comment-name">
-                                        <a href="#!" style="font-size:14px;">{{ com.username }}</a>
-                                        <i class="fa fa-clock-o" style="margin-left:10px; font-size: 11px; color: #b4b7c1;"> {{ com.comment_date|naturaltime }}</i>
-                                    </span>
-                                    <p class="be-comment-text">
-                                        {{ com.comment }}
-                                    </p>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <form action="{% url 'add_comment' movie.id %}" method="post" class="form-block" id="CommentForm">
-                {% csrf_token %}
-                <input type="hidden" name="parent" id="parent_id" value="">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="row ml-5">
+                <div class="col-1"></div>
+                <div class="col-4"><h3 class="mt-5">{{ movie.title }}</h3></div>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6 fl_icon">
-                        <div class="form-group fl_icon">
-                            <div class="icon"><i class="fa fa-envelope-o"></i></div>
-                            <input class="form-input" type="text" placeholder="Email" name="email">
-                            {{ add_comment.email }}
+                    <div class="col-lg-4">
+                        <div class="card mb-4" style="width: 18rem;">
+                            <img class="card-img-top" height="350px;" src="{{ movie.image.url }}" alt="..." />
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="form-group fl_icon">
-                            <div class="icon"><i class="fa fa-user"></i></div>
-                            <input class="form-input" type="text" placeholder="Your name" name="username">
-                            {{ add_comment.username }}
-                        </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-6">
+                        <ul>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Название на английском' %}</b> {{ movie.title_eng }}</span>
+                            </li>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Слоган' %}</b> {{ movie.tagline }}</span>
+                            </li>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Категория' %}</b> {{ movie.category.name }}</span>
+                            </li>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Год выпуска' %}</b> {{ movie.premieredate }}</span>
+                            </li>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Страна' %}</b> {{ movie.country }}</span>
+                            </li>
+
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Режиссеры' %}</b>
+                                    {% for director in movie.director.all %}
+                                        <a href="{{ director.get_absolute_url }}"><span>{{ director.name }}, </span></a>
+                                    {% endfor %}
+                                </span>
+                            </li>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Актеры' %}</b>
+                                    {% for actor in movie.actor.all %}
+                                        <a href="{{ actor.get_absolute_url }}"><span>{{ actor.name }}, </span></a>
+                                    {% endfor %}
+                                </span>
+                            </li>
+
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Жанр' %}</b>
+                                    {% for genre in movie.genre.all %}
+                                        <span>{{ genre.name }}, </span>
+                                    {% endfor %}
+                                </span>
+                            </li>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Награды' %}</b> {{ movie.awards }}</span>
+                            </li>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Бюджет' %}</b> {{ movie.budget }} {% trans 'млн' %} $</span>
+                            </li>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Возраст' %}</b> {{ movie.age }}</span>
+                            </li>
+                            <li style="list-style: none">
+                                <span><b>{% trans 'Длительность' %}</b> {{ movie.duration }} {% trans 'мин' %}.</span>
+                            </li>
+                             <li style="list-style: none;">
+                                 <b><a style="text-decoration: none; color: grey;" href="#iframe">{% trans 'Трейлер' %}</a></b>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <textarea class="form-input" required="" id='yourcomment' placeholder="Your text" name="comment"></textarea>
-                            {{ add_comment.comment }}
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary pull-right">submit</button>
                 </div>
-            </form>
+                <div class="row">
+                    {% for photo in movie.photogallery_set.all %}
+                        <div class="col-3">
+                            <img src="{{ photo.image.url }}" alt="{{ photo.description }}" class="w-20" style="width: 250px; height:120px;">
+                        </div>
+                        <div class="col-1"></div>
+                    {% endfor %}
+                </div>
+                <div class="col">
+                    <h2>{% trans 'Про что' %} {{ movie.category.name|lower }} «{{ movie.title }}»:"</h2>
+                    <p>{{ movie.description|safe }}</p>
+                    <p id="iframe">{{ movie.iframe.link|safe }}</p>
+                </div>
+                <div class="be-comment-block">
+                    <h1 class="comments-title">Comments
+                        {% if movie.moviecomment_set.count == 0 %}
+                            0
+                        {% else %}
+                            {{ movie.moviecomment_set.count }}
+                        {% endif %}</h1>
+                    <div class="be-comment">
+                        {% for comment in movie.get_comment %}
+                            <div class="be-img-comment">
+                                <a href="#">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                                </a>
+                            </div>
+                            <div class="be-comment-content">
+                                    <span class="be-comment-name">
+                                        <a href="#!" style="font-size:14px;">{{ comment.username }}</a>
+                                        <i class="fa fa-clock-o" style="margin-left:10px; font-size: 11px; color: #b4b7c1;"> {{ comment.comment_date|naturaltime  }}</i>
+                                    </span>
+                                    <span class="be-comment-time">
+                                        <a href="#CommentForm" onclick="addComment('{{ comment.username }}', '{{ comment.id }}')">Reply</a>
+                                    </span>
+                                <p class="be-comment-text">
+                                    {{ comment.comment }}
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col-6 mb-3">
+                                    {% for com in comment.moviecomment_set.all %}
+                                        <div class="be-img-comment">
+                                            <a href="#">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                                            </a>
+                                        </div>
+                                        <div class="be-comment-content">
+                                            <span class="be-comment-name">
+                                                <a href="#!" style="font-size:14px;">{{ com.username }}</a>
+                                                <i class="fa fa-clock-o" style="margin-left:10px; font-size: 11px; color: #b4b7c1;"> {{ com.comment_date|naturaltime }}</i>
+                                            </span>
+                                            <p class="be-comment-text">
+                                                {{ com.comment }}
+                                            </p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <form action="{% url 'add_comment' movie.id %}" method="post" class="form-block" id="CommentForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="parent" id="parent_id" value="">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 fl_icon">
+                                <div class="form-group fl_icon">
+                                    <div class="icon"><i class="fa fa-envelope-o"></i></div>
+                                    <input class="form-input" type="text" placeholder="Email" name="email">
+                                    {{ add_comment.email }}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-group fl_icon">
+                                    <div class="icon"><i class="fa fa-user"></i></div>
+                                    <input class="form-input" type="text" placeholder="Your name" name="username">
+                                    {{ add_comment.username }}
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <textarea class="form-input" required="" id='yourcomment' placeholder="Your text" name="comment"></textarea>
+                                    {{ add_comment.comment }}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary pull-right">submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <script>

@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
-{% block content %}
-    <!-- Page content-->
 
-    <div class="container-sm" style="">
+<style>
+    .allauth{
+        display: flex;
+        justify-content: center;
+    }
+</style>
+{% block container %}
+    <div class="container-sm">
         {% include 'news/navbar.html' %}
-        <div class="row">
-            <div class="col-8">
-                {% block movie %}
-                {% endblock movie %}
-            </div>
-            <div class="col-3">{% include 'news/sidebar.html' %}</div>
-            <div class="col-1"></div>
-        </div>
+        {% block account %}
+        {% endblock account %}
+        {% block movie %}
+        {% endblock movie %}
     </div>
-{% endblock content %}
+{% endblock container %}

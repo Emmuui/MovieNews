@@ -36,6 +36,11 @@ class MovieDetailView(GenreYearFilter, DetailView):
         return context
 
 
+class ActorDirectorView(GenreYearFilter, DetailView):
+    model = MovieDirectorActor
+    template_name = 'news/director_actor.html'
+
+
 class AddComment(View):
     def post(self, request, pk):
         context = {}
@@ -78,8 +83,6 @@ class SearchView(GenreYearFilter, ListView):
         query = self.request.GET.get("q")
         context["q"] = f'q={query}&'
         return context
-
-
 
 
 

@@ -38,6 +38,9 @@ class MovieDirectorActor(models.Model):
         verbose_name = 'Актер и режиссер'
         verbose_name_plural = 'Актеры и режиссеры'
 
+    def get_absolute_url(self):
+        return reverse('director_actor_detail', args=[str(self.slug)])
+
     def __str__(self):
         return self.name
 

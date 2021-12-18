@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load account socialaccount %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand ml-2 font-weight-bold" href="{% url 'movie_list' %}">
         <span id="burgundy">The</span><span id="orange">MovieNews</span>
@@ -8,12 +9,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Register</a>
-            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item"><h5 style="font-size: 15px; margin-top: 11px;">{{ user.username }}</h5></li>
+                <li class="nav-item" style="font-size: 15px;"><a class="nav-link" href="{% url 'account_email' %}">E-mail</a></li>
+                <li class="nav-item" style="font-size: 15px;"><a class="nav-link" href="{% url 'account_logout' %}">Sign Out</a></li>
+            {% else %}
+                <li class="nav-item mr-2"><a class="nav-link" href="{% url 'account_login' %}">Sign In</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a></li>
+            {% endif %}
         </ul>
         <form action="{% url 'search' %}" method="get">
             <ul class="navbar-nav">
@@ -30,7 +33,7 @@
             {% get_available_languages as LANGUAGES %}
             {% get_language_info_list for LANGUAGES as languages %}
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ languages.current }}
+                Язык
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <ul style="list-style: none;">

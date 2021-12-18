@@ -15,30 +15,35 @@
 
     </style>
     <!-- Nested row for non-featured blog posts-->
-        <div class="row ml-4 mt-5">
-            {% if movie_list %}
-                {% for mov in movie_list %}
-                    <div class="col-lg-6">
-                        <!-- Blog post-->
-                        <div class="card mb-2" style="width: 18rem;">
-                            <a href="{{ mov.get_absolute_url }}"><img class="card-img-top" height="350px;" src="{{ mov.image.url }}" alt="..." /></a>
-                        </div>
-                        <div class="mb-5 mr-5">
-                                <h2 style="font-size: 12pt; text-align: center;"><a href="{{ mov.get_absolute_url }}" style="color: #595959;">{{ mov.title }}</a></h2>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div class="card m-auto">
-                    <div class="card-body mt-2 mb-2">
-                        <h2 class="card-title" style="text-align: center;">Результат</h2>
-                        <p class="card-text" style="text-align: center;">
-                            Нет результатов по запросу: {{ query }}
-                        </p>
+        <div class="row ml-5 mt-5">
+                {% if movie_list %}
+                <div class="col-8">
+                    <div class="row ml-5 mt-3">
+                        {% for mov in movie_list %}
+                            <div class="col-lg-6">
+                                <!-- Blog post-->
+                                <div class="card mb-2" style="width: 18rem;">
+                                    <a href="{{ mov.get_absolute_url }}"><img class="card-img-top" height="350px;" src="{{ mov.image.url }}" alt="..." /></a>
+                                </div>
+                                <div class="mb-5 mr-5">
+                                        <h2 style="font-size: 12pt; text-align: center;"><a href="{{ mov.get_absolute_url }}" style="color: #595959;">{{ mov.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endif %}
-        </div>
+                <div class="col-2">{% include 'news/sidebar.html' %}</div>
+                {% else %}
+                    <div class="card m-auto">
+                        <div class="card-body mt-2 mb-2">
+                            <h2 class="card-title" style="text-align: center;">Результат</h2>
+                            <p class="card-text" style="text-align: center;">
+                                Нет результатов по запросу: {{ query }}
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
 
 {% include 'news/pagination.html' %}
 {% endblock movie %}
